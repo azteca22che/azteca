@@ -1,0 +1,82 @@
+#include <stdio.h>//untuk input output
+#include <stdlib.h>//untuk fungsi umum 
+#include <string.h>//untuk library string
+
+// Fungsi untuk mendapatkan nilai angka dari kartu
+int getCardValue(char card) {//yang mengambil satu karakter sebagai input dan mengembalikan nilai numerik yang sesuai 
+//dengan kartu tersebut dalam permainan kartu.
+    if (card == 'J') return 11;//memeriksa apakah nilai variabel card sama dengan karakter 'J'.
+    // Jika iya, maka kondisi di dalamnya akan dieksekusi dan akan mengembalikan nilai 11
+    else if (card == 'Q') return 12;//memeriksa apakah kartu adalah Q jika iya maka mengembalikkan nilai 12
+    else if (card == 'K') return 13;//memeriksa apakah kartu adalah K jika iya mengembalikan nilai 13
+    else if (card == '1') return 10;//memeriksa apakah kartu 1 jika iya mengembalikan nilai 10
+    else return (int)(card - '0');//memeriksa jika kartu bukan j k q 1 maka kartu berisi angka dan kemudian akan
+    //dikonversikan menjadi nilai numerik
+}
+
+// Fungsi untuk menampilkan urutan kartu
+void printCards(char *cards, int length) {//fungsi untuk mencetak kartu kartu dalam array karakter cards
+    for (int i = 0; i < length; i++) {//perulangan yang akan dimulai dari 0 dana akan terus berlanjut selama i< lenght dan akan terus
+    //bertambah setiap kali selesai di eksekusi
+        printf("%c ", cards[i]);//mencetak karakter yang terdapat pada indeks ke-i dari array cards
+    }
+    printf("\n");//mencetak newline
+}
+
+// Fungsi untuk mengurutkan kartu
+int sortCards(char *cards, int length) {//fungsi untuk mengurutkan kartu
+    int swaps = 0;//variabel swaps tipe data integer yang dimulai dari 0
+    for (int i = 0; i < length - 1; i++) {//perulangan yang dimulai dari i=0 dan akan terus berlanjut selma i<lenght-1 dan akan terus bertambah
+    //selama setelah selesai di eksekusi (perulangan ini digunakan sebagai tukar menukar antar elemen)
+        int min_idx = i;//variabel min_idx tipe data integer yang diinisialisasi i
+        for (int j = i; j < length; j++) {//perulangan yang dimulai daari j=i dan akan terus berlanjut selama j<lenght dan akan terus
+        //bertambah setelah di eksekusi(perulangan ini berfungsi untuk mengurutkan elemen elemen)
+            // Konversi kartu ke nilai angka untuk membandingkan
+            if (getCardValue(cards[j]) < getCardValue(cards[min_idx])) {//getCardValue(cards[j] mendapatkan nilai numerik dari kartu yang disimpan pada indeks j 
+            //dalam array cards. Ini dilakukan dengan memberikan karakter kartu pada indeks j sebagai argumen kepada fungsi getCardValue.
+            //getCardValue(cards[min_idx untuk mendapatkan nilai numerik dari kartu yang disimpan pada indeks min_idx dalam array cards. 
+           
+                min_idx = j;//jika pernyataan if terpenuhi maka nilai numerik dari kartu dalam indeks j lebih kecil dari nilai numerik 
+                //kartu pada indeks min_idx, maka min_idx akan diupdate menjadi j 
+            }
+        }
+        if (min_idx != i)//memeriksa apakah indeks minimum (min_idx) yang telah ditemukan dalam array cards tidak sama dengan indeks 
+        //iterasi saat ini (i).
+        {
+            char temp = cards[i];//Variabel temp bertipe char digunakan untuk menyimpan nilai kartu pada indeks i
+            cards[i] = cards[min_idx];//Nilai kartu pada indeks i diganti dengan nilai kartu pada indeks min_idx
+            cards[min_idx] = temp;// Nilai kartu pada indeks min_idx diganti dengan nilai yang disimpan dalam variabel temp,
+            // yaitu nilai kartu pada indeks i sebelumnya
+            swaps++;// Variabel swaps bertipe int digunakan untuk menghitung jumlah pertukaran (swap) yang terjadi. 
+            //Pada setiap pertukaran yang berhasil, nilai swaps akan bertambah satu.
+
+            printf("Pertukaran %d : ", swaps);//mencetak pertukaran
+            printCards(cards, length);//Setelah pesan tentang pertukaran dicetak,
+            // pernyataan ini memanggil fungsi printCards untuk mencetak array cards
+        }
+        
+    }
+    return swaps;//untuk mengembalikan nilai dari variabel swaps
+}
+
+int main() {//fungsi utama program
+    int n;//variabel n bertipe data integer
+    printf("Masukkan jumlah kartu: ");//mencetak masukkan jumlah kartu
+    scanf("%d", &n);//memanggil integer dan di simpan di variabel n
+
+    char cards[n];//variabel cards tipe data char dan memiliki panjang sebanyak nilai yang tersimpan di n
+
+    printf("Masukkan nilai kartu (1-10, J, Q, K): ");//mencetak Masukkan nilai kartu (1-10, J, Q, K):
+    for (int i = 0; i < n; i++) {//perulangan untuk membaca nilai-nilai kartu dari pengguna dan menyimpannya ke dalam array cards.
+    //yang dimulai dari i=0 dan akan terus berjalan selama i<n dan akan terus bertambah satu 
+        scanf(" %c", &cards[i]);//untuk membaca nilai kartu dari pengguna
+    }
+
+    int swaps = sortCards(cards, n);//untuk melakukan pengurutan terhadap kartu kartu dan akan menyimpanya dalam variabel swaps yang
+    //bertipe data integer
+
+    printf("\nJumlah minimal langkah pertukaran: %d\n", swaps);//mencetak nJumlah minimal langkah pertukara
+
+    free(cards);//untuk membebaskan memori yang dialokasikan sebelumnya untuk array cards
+    return 0;//program selesai
+}
