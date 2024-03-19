@@ -1,0 +1,63 @@
+#include <stdio.h>//untuk library input output
+
+// Fungsi untuk mengecek apakah posisi (x, y) valid pada papan catur 8x8
+int isValid(int x, int y) {//deklarasi fungsi isValid yang mengambil dua parameter, yaitu x dan y,
+// yang masing-masing mewakili koordinat titik yang ingin diperiksa.
+    return (x >= 0 && x < 8 && y >= 0 && y < 8);//Setiap kondisi berisi perbandingan yang mengevaluasi apakah nilai x dan y
+   // x >= 0: Kondisi ini memeriksa apakah nilai x lebih besar atau sama dengan 0.
+   //x < 8: Kondisi ini memeriksa apakah nilai x kurang dari 8.
+   //y >= 0: Kondisi ini memeriksa apakah nilai y lebih besar atau sama dengan 0.
+   //y < 8: Kondisi ini memeriksa apakah nilai y kurang dari 8.
+}
+
+// Fungsi untuk menandai semua langkah yang mungkin dilakukan oleh kuda pada papan catur
+void koboImaginaryChess(int i, int j, int size, int *chessBoard) {//fungsi koboImaginaryChess yang terdiri 4 parameter int i, int j, int size, int *chessBoard
+    // Langkah-langkah yang mungkin dilakukan oleh kuda
+    int movesX[] = {2, 1, -1, -2, -2, -1, 1, 2};//menyimpan pergerakan horizontal dimana bilangan positif ke kanan dan negatif ke kiri
+    int movesY[] = {1, 2, 2, 1, -1, -2, -2, -1};//menyimpan gerak vertikal dimana posyif ke atas dan negatif ke bawah
+
+    // Menandai setiap langkah yang mungkin dilakukan oleh kuda
+    for (int k = 0; k < 8; k++) {//perulangan yang dimulai dari k=0 dan aakan terus berlngsung selama k <8
+        int nextX = i + movesX[k];//, variabel nextX dihitung dengan menambahkan nilai pergeseran horizontal (movesX[k]) ke posisi horizontal 
+        //saat ini (i). movesX[k] mengambil nilai pergeseran horizontal dari array movesX yang telah dideklarasikan sebelumnya.
+        int nextY = j + movesY[k];//variabel nextY dihitung dengan menambahkan nilai pergeseran vertikal (movesY[k]) ke posisi vertikal 
+        //saat ini (j). movesY[k] mengambil nilai pergeseran vertikal dari array movesY yang telah dideklarasikan
+        if (isValid(nextX, nextY)) {//memeriksa apakah koordinat (nextX, nextY) merupakan koordinat yang valid dalam konteks papan catur.
+            *(chessBoard + nextX * size + nextY) = 1; // Menandai langkah kuda dengan nilai 1
+        }   //Jika koordinat (nextX, nextY) valid (sesuai dengan hasil evaluasi dari kondisi isValid(nextX, nextY)), 
+        //maka nilai pada papan catur pada posisi tersebut akan diubah menjadi 1.
+    }
+}
+
+int main() {//program utama program
+    int i, j;//variabel i dan j brtipe data integer
+    scanf("%d %d", &i, &j); // Membaca input posisi i dan j
+
+    int size = 8; // Ukuran papan catur,dengan varibael size tipe data integer dan menadakan ukuran papan catur 8x8
+    int chessBoard[size][size]; // Array 2D untuk papan catur,papar catur memili 8 baris 8 kolom
+
+    // Inisialisasi papan catur dengan nilai awal 0
+    for (int x = 0; x < size; x++) {//Perulangan ini digunakan untuk mengiterasi setiap baris dalam array dua dimensi chessBoard. 
+    //Variabel x mengindikasikan nomor baris saat ini, dimulai dari 0 hingga size - 1. Dengan perulangan ini, setiap baris dalam papan catur dapat diakses.
+        for (int y = 0; y < size; y++) {// Perulangan ini bersarang di dalam perulangan pertama.
+        // Ini digunakan untuk mengiterasi setiap kolom dalam array dua dimensi chessBoard yang mewakili satu baris tertentu. 
+        //Variabel y mengindikasikan nomor kolom saat ini, dimulai dari 0 hingga size - 1
+            chessBoard[x][y] = 0;//untuk mengubah nilai elemen di baris ke-x dan kolom ke-y dalam array dua dimensi chessBoard menjadi 0
+        }
+    }
+
+    koboImaginaryChess(i, j, size, (int *)chessBoard); // Memanggil fungsi untuk menandai langkah kuda
+
+    // Menampilkan papan catur setelah langkah kuda ditandai
+    for (int x = 0; x < size; x++) {//digunakan untuk mengiterasi setiap baris dalam array dua dimensi chessBoard.
+    // Variabel x mengindikasikan nomor baris saat ini, dimulai dari 0 hingga size - 1
+        for (int y = 0; y < size; y++) {//Perulangan dalam ini bersarang di dalam perulangan luar.
+        // Ini digunakan untuk mengiterasi setiap kolom dalam array dua dimensi chessBoard, yang mewakili satu baris tertentu. 
+        //Variabel y mengindikasikan nomor kolom saat ini, dimulai dari 0 hingga size - 1.
+            printf("%d ", chessBoard[x][y]);//ni digunakan untuk mencetak nilai dari elemen yang sedang diakses pada saat ini dalam array dua dimensi chessBoard
+        }
+        printf("\n");//mencetak baris baru
+    }
+
+    return 0;//program telah selesai 
+}
